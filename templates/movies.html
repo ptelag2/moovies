@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+th, td {
+  padding: 5px;
+  text-align: left;
+}
+</style>
+</head>
+<body>
+
+{% for movie_info in movie_infos %}
+<h2>Movie: {{ movie_info['Title'] }}</h2>
+
+<table style="width:80%">
+    <tr>
+        <th>Title:</th>
+        <td><p>{{ movie_info['Title'] }}</p></td>
+    </tr>
+    <tr>
+        <th>Genre:</th>
+        <td><p>{{ movie_info['Genre'] }}</p></td>
+    </tr>
+    <tr>
+        <th>Language:</th>
+        <td><p>{{ movie_info['Language'] }}</p></td>
+    </tr>
+    <tr>
+        <th>Publication Year:</th>
+        <td><p>{{ movie_info['Publication_Year'] }}</p></td>
+    </tr>
+    <tr>
+        <th>Run Time:</th>
+        <td><p>{{ movie_info['Runtime'] }}</p></td>
+    </tr>
+  </table>
+{% endfor %}
+
+</body>
+</html>
