@@ -28,12 +28,13 @@ def moviepage():
 def actorpage():
     actor_id = request.args.get('id', default = -1, type = int)
     if actor_id != -1:
-        return {'status': 'OK'}
+        fake_actor = [{'ActorId': 3532, 'Actor_Name': 'John Smith', 'Birth_Year': 1982, 'Death_Year': 0, 'Most_Known_Titles': 'tt10'}]
+        return render_template('actors.html', actors_info=fake_actor)
     
     recommand = request.args.get('recommand', default = False, type = bool)
     if recommand:
-        return {'status': 'OK'}
-    
+        return render_template('actors.html', actors_info=fake_actor)
+        
     abort(404)
 
 @app.route('/directors/', methods=[GET, PUT, POST, DELETE])
