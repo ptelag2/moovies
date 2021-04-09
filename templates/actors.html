@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+th, td {
+  padding: 5px;
+  text-align: left;
+}
+</style>
+</head>
+<body>
+
+{% for actor_info in actor_infos %}
+<a href="/actors?id={{ actor_info['ActorId'] }}">
+    <h2>Actor: {{ actor_info['Actor_Name'] }}</h2>
+</a>
+
+
+<table style="width:80%">
+    <tr>
+        <th>Name:</th>
+        <td><p>{{ actor_info['Actor_Name'] }}</p></td>
+    </tr>
+    <tr>
+        <th>Birth Year:</th>
+        <td><p>{{ actor_info['Birth_Year'] }}</p></td>
+    </tr>
+    <tr>
+        <th>Titles:</th>
+        <td><p>{{ actor_info['Most_Known_Titles'] }}</p></td>
+    </tr>
+  </table>
+{% endfor %}
