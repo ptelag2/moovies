@@ -15,7 +15,7 @@ th, td {
 <body>
 
 {% for movie_info in movie_infos %}
-<a href="/movies?id={{ actor_info['MovieId'] }}">
+<a href="/movies?id={{ movie_info['MovieId'] }}">
     <h2>Movie: {{ movie_info['Title'] }}</h2>
 </a>
 
