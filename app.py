@@ -1,4 +1,25 @@
 from flask import Flask, request, abort, jsonify, render_template
+import os
+import sqlalchemy
+from yaml import load, Loader
+
+def init_connect_engine():
+    if os.environ.get('GAE_ENV') != 'standard':
+        variables = load(open("app.yaml"), Loader=Loader)
+        env_variables = variables['env_variables']
+        print(env_variables)
+        for var in env_variables:
+            os.environ[var] = env_variables[var]
+            pool = sqlalchemy.create_engine(
+            sqlalchemy.engine.url.URL(
+            drivername="mysql+pymysql",
+            username=os.environ.get('MYSQL_USER'), #username
+            password=os.environ.get('MYSQL_PASSWORD'), #user password
+            database=os.environ.get('MYSQL_DB'), #database name
+            host=os.environ.get('MYSQL_HOST') #ip
+            )
+        )
+    return pool
 
 GET = 'GET'
 PUT = 'PUT'
@@ -62,5 +83,11 @@ def reviewpage():
     abort(404)
 
 if __name__ == '__main__':
-    app.run(port=5000, debug=True)
+    #app.run(port=5000, debug=True)
+    import model.database as mydb
+    print('start')
+    db_conn = init_connect_engine().connect()
+    mydb.test(db_conn)
+    db_conn.close()
+    print('end')
 
