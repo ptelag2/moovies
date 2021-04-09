@@ -7,7 +7,6 @@ def init_connect_engine():
     if os.environ.get('GAE_ENV') != 'standard':
         variables = load(open("app.yaml"), Loader=Loader)
         env_variables = variables['env_variables']
-        print(env_variables)
         for var in env_variables:
             os.environ[var] = env_variables[var]
             pool = sqlalchemy.create_engine(
@@ -76,18 +75,22 @@ def directorpage():
 
 @app.route('/reviews/', methods=[GET, PUT, POST, DELETE])
 def reviewpage():
+    fake_review = [{'ReviewId': 5644564, 'UserId': 654684768, 'MovieId': 659,
+                      'Comment': 'I like this movie', 'Rating':5}]
     movie_id = request.args.get('movie_id', default = -1, type = int)
     if movie_id != -1:
-        return {'status': 'OK'}
+        return render_template('review.html', review_infos=fake_review+fake_review)
     
     abort(404)
 
 if __name__ == '__main__':
-    #app.run(port=5000, debug=True)
+    app.run(port=5000, debug=True)
+    '''
     import model.database as mydb
     print('start')
     db_conn = init_connect_engine().connect()
     mydb.test(db_conn)
     db_conn.close()
     print('end')
+    '''
 

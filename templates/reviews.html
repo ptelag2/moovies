@@ -14,19 +14,11 @@ th, td {
 </head>
 <body>
 
-{% for review_info in review_info %}
-<a href="/review?id={{ review_id['ReviewId'] }}">
-    <h2>review: {{ review_info['ReviewId'] }}</h2>
-</a>
-
+{% for review_info in review_infos %}
 <table style="width:80%">
     <tr>
         <th>UserId:</th>
         <td><p>{{ review_info['UserId'] }}</p></td>
-    </tr>
-    <tr>
-        <th>MovieId:</th>
-        <td><p>{{ review_info['MovieId'] }}</p></td>
     </tr>
     <tr>
         <th>Comment:</th>
