@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+th, td {
+  padding: 5px;
+  text-align: left;
+}
+</style>
+</head>
+<body>
+
+{% for review_info in review_info %}
+<a href="/review?id={{ review_id['ReviewId'] }}">
+    <h2>review: {{ review_info['ReviewId'] }}</h2>
+</a>
+
+<table style="width:80%">
+    <tr>
+        <th>UserId:</th>
+        <td><p>{{ review_info['UserId'] }}</p></td>
+    </tr>
+    <tr>
+        <th>MovieId:</th>
+        <td><p>{{ review_info['MovieId'] }}</p></td>
+    </tr>
+    <tr>
+        <th>Comment:</th>
+        <td><p>{{ review_info['Comment'] }}</p></td>
+    </tr>
+    <tr>
+        <th>Rating:</th>
+        <td><p>{{ review_info['Rating'] }}</p></td>
+    </tr>
+  </table>
+{% endfor %}
