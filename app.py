@@ -2,6 +2,7 @@ from flask import Flask, request, abort, jsonify, render_template
 import os
 import sqlalchemy
 from yaml import load, Loader
+import model.database as mydb
 
 def init_connect_engine():
     if os.environ.get('GAE_ENV') != 'standard':
@@ -19,6 +20,10 @@ def init_connect_engine():
             )
         )
     return pool
+
+# Initialize Google GCP databyse connection    
+db_conn = init_connect_engine().connect()
+
 
 GET = 'GET'
 PUT = 'PUT'
@@ -113,13 +118,17 @@ def actorpage():
 def directorpage():
     if request.method == "POST":
         print(request.form['director_name']) # get example data
+        d = request.form # assign request_form as dictionary
+        print("line 122")
+        mydb.upload_director(-1, d, db_conn)
+        print("line 124")
         return render_template('message.html', msg='post to directors')
     method = request.args.get('_method', default=None, type=str)
     if method == UPDATE:
         return render_template('post_director.html', director_info={'DirectorId': -1})
 
     fake_director = [{'DirectorId': 321685, 'Director_name': 'My Director', 'Birth_Year': 1344,
-                      'Award': None}]
+                      'Death_Year': 0}]
     director_id = request.args.get('id', default = -1, type = int)
     if director_id != -1:
         if method == DELETE:
@@ -162,7 +171,7 @@ def reviewpage():
     abort(404)
 
 if __name__ == '__main__':
-    app.run(port=5000, debug=True)
+    # app.run(port=5000, debug=True)
     '''
     # Example use of model.database
     import model.database as mydb
@@ -172,4 +181,6 @@ if __name__ == '__main__':
     db_conn.close()
     print('end')
     '''
-
+    print('start')
+    # mydb.upload_director(-1, db_conn)
+    print('end')
