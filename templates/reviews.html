@@ -14,19 +14,69 @@ th, td {
 </head>
 <body>
 
+
+{% if allow_comment %}
+<p>My Comment:</p>
+<form action="/reviews/" method="POST">
+<textarea rows = "6" cols = "80" name = "comment">
+</textarea>
+<br/>
+<div style="display:inline-block;">
+    Rating:
+    <select type="hidden" name="rating" style="display:inline-block;">
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+      <option value="7">7</option>
+      <option value="8">8</option>
+      <option value="9">9</option>
+      <option value="10">10</option>
+    </select>
+    <button style="display:inline-block ">Comment:</button>
+    <input type="hidden" name="movie_id" value="{{ review_infos[0]['MovieId'] }}">
+    <input type="hidden" name="review_id" value="-1">
+</div>
+</form>
+{% endif %}
+<br/>
+<br/>
 {% for review_info in review_infos %}
 <table style="width:80%">
-    <tr>
-        <th>UserId:</th>
-        <td><p>{{ review_info['UserId'] }}</p></td>
-    </tr>
-    <tr>
-        <th>Comment:</th>
-        <td><p>{{ review_info['Comment'] }}</p></td>
-    </tr>
-    <tr>
-        <th>Rating:</th>
-        <td><p>{{ review_info['Rating'] }}</p></td>
-    </tr>
-  </table>
+  <tr>
+      <th>User:</th>
+      <td><p>{{ review_info['UserId'] }}</p></td>
+  </tr>
+  <tr>
+    <th>Movie:</th>
+    <td><p>{{ review_info['MovieId'] }}</p></td>
+</tr>
+  <tr>
+      <th>Comment:</th>
+      <td><p>{{ review_info['Comment'] }}</p></td>
+  </tr>
+  <tr>
+      <th>Rating:</th>
+      <td><p>{{ review_info['Rating'] }}</p></td>
+  </tr>
+</table>
+
+  
+<div style="display:inline-block;">
+<form action="/reviews" method="GET">
+  <button>Edit</button>
+  <input type="hidden" name="review_id" value="{{ review_info['ReviewId'] }}">
+  <input type="hidden" name="_method" value="EDIT">
+</form>
+</div>
+<div style="display:inline-block;">
+<form action="/reviews" method="GET">
+  <button>Delete</button>
+  <input type="hidden" name="review_id" value="{{ review_info['ReviewId'] }}">
+  <input type="hidden" name="_method" value="DELETE">
+</form>
+</div>
+
 {% endfor %}

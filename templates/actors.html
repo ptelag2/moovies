@@ -34,4 +34,22 @@ th, td {
         <td><p>{{ actor_info['Most_Known_Titles'] }}</p></td>
     </tr>
   </table>
+
+
+<div style="display:inline-block;">
+  <form action="/actors/" method="GET">
+  <button>Edit</button>
+  <input type="hidden" name="id" value="{{ actor_info['ActorId'] }}">
+  <input type="hidden" name="_method" value="EDIT">
+</form>
+</div>
+<div style="display:inline-block;">
+  <form action="/actors/" method="GET">
+  <button>Delete</button>
+  <input type="hidden" name="id" value="{{ actor_info['ActorId'] }}">
+  <input type="hidden" name="_method" value="DELETE">
+</form>
+</div>
+
+
 {% endfor %}

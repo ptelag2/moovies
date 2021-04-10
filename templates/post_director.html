@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+th, td {
+  padding: 5px;
+  text-align: left;
+}
+</style>
+</head>
+<body>
+
+<h2>Upload Director</h2>
+
+<form action="/directors/" method="POST">
+<table style="width:80%">
+    <tr>
+        <th>Name:</th>
+        <td><input name="director_name" value="{{ director_info['Director_name'] }}" /></td>
+    </tr>
+    <tr>
+        <th>Birth Year:</th>
+        <td><input name="birth_year" value="{{ director_info['Birth_Year'] }}" /></td>
+    </tr>
+    <tr>
+        <th>Award:</th>
+        <td><input name="award" value="{{ director_info['Award'] }}" /></td>
+    </tr>
+  </table>
+
+  <div style="display:inline-block;">
+    <button>Upload</button>
+    <input type="hidden" name="id" value="{{ director_info['DirectorId'] }}">
+  </div>
+</form>

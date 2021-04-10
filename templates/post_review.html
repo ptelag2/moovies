@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>Edit Comment</h2>
+<p>Your Comment:</p>
+<form action="/reviews/" method="POST">
+<textarea rows = "6" cols = "80" name = "comment">
+{{ review_info['Comment'] }}
+</textarea>
+<br/>
+<div style="display:inline-block;">
+    <button>Upload</button>
+    <input type="hidden" name="review_id" value="{{ review_info['ReviewId'] }}">
+</div>
+</form>

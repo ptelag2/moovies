@@ -16,35 +16,51 @@ th, td {
 
 {% for movie_info in movie_infos %}
 <a href="/movies?id={{ movie_info['MovieId'] }}">
-    <h2>Movie: {{ movie_info['Title'] }}</h2>
+  <h2>Movie: {{ movie_info['Title'] }}</h2>
 </a>
 
-
 <table style="width:80%">
-    <tr>
-        <th>Title:</th>
-        <td><p>{{ movie_info['Title'] }}</p></td>
-    </tr>
-    <tr>
-        <th>Genre:</th>
-        <td><p>{{ movie_info['Genre'] }}</p></td>
-    </tr>
-    <tr>
-        <th>Language:</th>
-        <td><p>{{ movie_info['Language'] }}</p></td>
-    </tr>
-    <tr>
-        <th>Publication Year:</th>
-        <td><p>{{ movie_info['Publication_Year'] }}</p></td>
-    </tr>
-    <tr>
-        <th>Run Time:</th>
-        <td><p>{{ movie_info['Runtime'] }}</p></td>
-    </tr>
-  </table>
-  <a href="/reviews?movie_id={{ movie_info['MovieId'] }}">
-    Comments
-  </a>
+  <tr>
+      <th>Title:</th>
+      <td><p>{{ movie_info['Title'] }}</p></td>
+  </tr>
+  <tr>
+      <th>Genre:</th>
+      <td><p>{{ movie_info['Genre'] }}</p></td>
+  </tr>
+  <tr>
+      <th>Language:</th>
+      <td><p>{{ movie_info['Language'] }}</p></td>
+  </tr>
+  <tr>
+      <th>Publication Year:</th>
+      <td><p>{{ movie_info['Publication_Year'] }}</p></td>
+  </tr>
+  <tr>
+      <th>Run Time:</th>
+      <td><p>{{ movie_info['Runtime'] }}</p></td>
+  </tr>
+</table>
+
+<a href="/reviews?movie_id={{ movie_info['MovieId'] }}" style="width: 70%; display:inline-block;">
+  Comments
+</a>
+
+<div style="display:inline-block;">
+  <form action="/movies" method="GET" style="display:inline-block;">
+  <button>Edit</button>
+  <input type="hidden" name="id" value="{{ movie_info['MovieId'] }}">
+  <input type="hidden" name="_method" value="EDIT">
+</form>
+</div>
+<div style="display:inline-block;">
+  <form action="/movies" method="GET" style="display:inline-block;">
+  <button>Delete</button>
+  <input type="hidden" name="id" value="{{ movie_info['MovieId'] }}">
+  <input type="hidden" name="_method" value="DELETE">
+</form>
+</div>
+  
 {% endfor %}
 
 </body>
