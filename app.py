@@ -2,6 +2,7 @@ from flask import Flask, request, abort, jsonify, render_template
 import os
 import sqlalchemy
 from yaml import load, Loader
+import model.database as database
 
 def init_connect_engine():
     if os.environ.get('GAE_ENV') != 'standard':
@@ -28,6 +29,7 @@ EDIT = 'EDIT'
 UPDATE = 'UPDATE'
 
 app = Flask(__name__)
+db_conn = init_connect_engine().connect()
 
 @app.route('/')
 def homepage():
@@ -101,7 +103,8 @@ def actorpage():
     
     recommand = request.args.get('recommand', default=False, type=bool)
     if recommand:
-        return render_template('actors.html', actor_infos=fake_actor+fake_actor+fake_actor)
+        rec_actors = database.get_actor_recommand1(db_conn)
+        return render_template('actors.html', actor_infos=rec_actors)
     
     key_word = request.args.get('key_word', default=None, type=str)
     if key_word:
