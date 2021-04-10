@@ -24,6 +24,8 @@ GET = 'GET'
 PUT = 'PUT'
 POST = 'POST'
 DELETE = 'DELETE'
+EDIT = 'EDIT'
+UPDATE = 'UPDATE'
 
 app = Flask(__name__)
 
@@ -31,61 +33,139 @@ app = Flask(__name__)
 def homepage():
     return render_template('index.html')
 
-@app.route('/movies/', methods=[GET, PUT, POST, DELETE])
+@app.route('/movies/', methods=[GET, POST])
 def moviepage():
+    ''' This function handles the route /movies/ which accepts GET and POST calls.
+    The POST call deals with uploading information of a new or existing movie.
+
+    If the movie does not exist in the database,
+    the uploaded json should contain movie_id = -1,
+    you should insert a new movie with a generated id into the movies table.
+    Otherwise, write the uploaded json into the existing attribute.
+
+
+    '''
+    if request.method == "POST":
+        print(request.form['title']) # get example data
+        return render_template('message.html', msg='post to movies')
+
+    method = request.args.get('_method', default=None, type=str)
+    if method == UPDATE:
+        # no need to do anything
+        return render_template('post_movie.html', movie_info={'MovieId': -1})
+
     fake_movie = [{'MovieId': 3532, 'Title': 'My Moovie', 'Runtime': 215,
                   'Publication_Year': 2022, 'Genre': 'Adult', 'Language': 'English'}]
+
     movie_id = request.args.get('id', default = -1, type = int)
     if movie_id != -1:
+        if method == DELETE:
+            # delete movie with movie_id
+            return render_template('message.html', msg='movie deleted :(')
+        if method == EDIT:
+            # no need to do anything
+            return render_template('post_movie.html', movie_info=fake_movie[0])
         return render_template('movies.html', movie_infos=fake_movie)
     
     recommand = request.args.get('recommand', default = False, type = bool)
     if recommand:
-        return render_template('movies.html', movie_infos=fake_movie+fake_movie+fake_movie)
+        # place for your advanced query
+        rec_list = fake_movie+fake_movie+fake_movie
+        return render_template('movies.html', movie_infos=rec_list)
+    
+    key_word = request.args.get('key_word', default=None, type=str)
+    if key_word:
+        # result for movies containing the key words
+        search_result = fake_movie+fake_movie+fake_movie
+        return render_template('movies.html', movie_infos=search_result)
     
     abort(404)
 
-@app.route('/actors/', methods=[GET, PUT, POST, DELETE])
+@app.route('/actors/', methods=[GET, POST])
 def actorpage():
+    if request.method == "POST":
+        print(request.form['actor_name']) # get example data
+        return render_template('message.html', msg='post to actors')
+    method = request.args.get('_method', default=None, type=str)
+    if method == UPDATE:
+        return render_template('post_actor.html', actor_info={'ActorId': -1})
+
     fake_actor = [{'ActorId': 53314, 'Actor_Name': 'My Actor', 'Birth_Year': 2077,
                    'Most_Known_Titles': 'Aha'}]
-    actor_id = request.args.get('id', default = -1, type = int)
+    actor_id = request.args.get('id', default=-1, type=int)
     if actor_id != -1:
+        if method == DELETE:
+            return {'status': 'OK', 'delete': 'works'}
+        if method == EDIT:
+            return render_template('post_actor.html', actor_info=fake_actor[0])
         return render_template('actors.html', actor_infos=fake_actor)
     
-    recommand = request.args.get('recommand', default = False, type = bool)
+    recommand = request.args.get('recommand', default=False, type=bool)
     if recommand:
+        return render_template('actors.html', actor_infos=fake_actor+fake_actor+fake_actor)
+    
+    key_word = request.args.get('key_word', default=None, type=str)
+    if key_word:
         return render_template('actors.html', actor_infos=fake_actor+fake_actor+fake_actor)
     
     abort(404)
 
-@app.route('/directors/', methods=[GET, PUT, POST, DELETE])
+@app.route('/directors/', methods=[GET, POST])
 def directorpage():
+    if request.method == "POST":
+        print(request.form['director_name']) # get example data
+        return render_template('message.html', msg='post to directors')
+    method = request.args.get('_method', default=None, type=str)
+    if method == UPDATE:
+        return render_template('post_director.html', director_info={'DirectorId': -1})
+
     fake_director = [{'DirectorId': 321685, 'Director_name': 'My Director', 'Birth_Year': 1344,
                       'Award': None}]
     director_id = request.args.get('id', default = -1, type = int)
     if director_id != -1:
+        if method == DELETE:
+            return {'status': 'OK', 'delete': 'works'}
+        if method == EDIT:
+            return render_template('post_director.html', director_info=fake_director[0])
         return render_template('directors.html', director_infos=fake_director)
     
     recommand = request.args.get('recommand', default = False, type = bool)
     if recommand:
         return render_template('directors.html', director_infos=fake_director+fake_director)
+
+    key_word = request.args.get('key_word', default=None, type=str)
+    if key_word:
+        return render_template('directors.html', director_infos=fake_director+fake_director)
     
     abort(404)
 
-@app.route('/reviews/', methods=[GET, PUT, POST, DELETE])
+@app.route('/reviews/', methods=[GET, POST])
 def reviewpage():
+    if request.method == "POST":
+        print(request.form['comment']) # get example data
+        return render_template('message.html', msg='post to reviews')
+    method = request.args.get('_method', default=None, type=str)
     fake_review = [{'ReviewId': 5644564, 'UserId': 654684768, 'MovieId': 659,
                       'Comment': 'I like this movie', 'Rating':5}]
     movie_id = request.args.get('movie_id', default = -1, type = int)
-    if movie_id != -1:
-        return render_template('review.html', review_infos=fake_review+fake_review)
+    review_id = request.args.get('review_id', default = -1, type = int)
+    if movie_id != -1 or review_id != -1:
+        if method == DELETE:
+            return {'status': 'OK', 'delete': 'works'}
+        if method == EDIT:
+            return render_template('post_review.html', review_info=fake_review[0])
+        return render_template('reviews.html', review_infos=fake_review+fake_review, allow_comment=True)
     
+    key_word = request.args.get('key_word', default=None, type=str)
+    if key_word:
+        return render_template('reviews.html', review_infos=fake_review+fake_review, allow_comment=False)
+
     abort(404)
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
     '''
+    # Example use of model.database
     import model.database as mydb
     print('start')
     db_conn = init_connect_engine().connect()
