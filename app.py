@@ -37,7 +37,6 @@ def homepage():
 def moviepage():
     ''' This function handles the route /movies/ which accepts GET and POST calls.
     The POST call deals with uploading information of a new or existing movie.
-
     If the movie does not exist in the database,
     the uploaded json should contain movie_id = -1,
     you should insert a new movie with a generated id into the movies table.
