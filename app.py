@@ -126,8 +126,7 @@ def actorpage():
         found_actors = mydb.get_actor_key_word(key_word, db_conn)
         if len(found_actors) < 1:
             return render_template('message.html', msg=f'We cannot find any actors with the name {key_word}')
-        return render_template('actors.html', actor_infos=found_actors)
-    
+        return render_template('actors.html', actor_infos=found_actors)        
     abort(404)
 
 @app.route('/directors/', methods=[GET, POST])
