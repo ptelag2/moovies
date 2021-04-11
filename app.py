@@ -132,7 +132,8 @@ def directorpage():
     director_id = request.args.get('id', default = -1, type = int)
     if director_id != -1:
         if method == DELETE:
-            return {'status': 'OK', 'delete': 'works'}
+            mydb.delete_director(director_id, db_conn)
+            return render_template('message.html', msg='deleted from directors')
         if method == EDIT:
             return render_template('post_director.html', director_info=fake_director[0])
         return render_template('directors.html', director_infos=fake_director)

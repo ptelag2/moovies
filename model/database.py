@@ -49,10 +49,8 @@ def delete_actor(actor_id, db_connection):
     pass
 
 def delete_director(director_id, db_connection):
-    # results = db_connection.execute(q.delete_director_query_recommand1(director_id))
-    # message = director_id + " has been removed from the Directors table"
-    # return message
-    pass
+    results = db_connection.execute(q.delete_director_query_recommand1(director_id))
+    return results
 
 def delete_movie(movie_id, db_connection):
     pass
