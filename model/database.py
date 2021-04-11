@@ -23,10 +23,29 @@ I will soon write some documentation in app.py to specify some expected behavior
 
 '''Get, return a list of dict'''
 def get_actor_recommand1(db_connection):
-    pass
+    results = get_result(q.actor_query_recommand1(), db_connection)
+    l = []
+    for result in results:
+        d = {}
+        d['Actor_Name'] = result[0]
+        d['Birth_Year'] = result[1]
+        d['Most_Known_Titles'] = result[2]
+        l.append(d)
+    return l
 
-def get_actor_key_word(db_connection):
-    pass
+def get_actor_key_word(key_word, db_connection):
+    query = q.actor_query_key_word(key_word)
+    print(query)
+    results = get_result(query, db_connection)
+    print(results)
+    l = []
+    for result in results:
+        d = {}
+        d['Actor_Name'] = result[0]
+        d['Birth_Year'] = result[1]
+        d['Most_Known_Titles'] = result[2]
+        l.append(d)
+    return l
 
 def get_director_recommand1(db_connection):
     results = db_connection.execute(q.director_query_recommand1())
