@@ -6,7 +6,7 @@ def actor_query_recommand1():
             From Actors as a Natural Join Acted_in Natural Join Movies as m Join MovieRating as mr on m.MovieId = mr.MovieId
             Group BY ActorId
             Having count(m.MovieId) >= 2
-            Order By AvgRating Desc, Director_name
+            Order By AvgRating Desc, Actor_Name
             Limit 15;
            """
 
@@ -14,7 +14,8 @@ def query_key_word(query_name, key_words):
     keys = key_words.split(' ')
     match = ''
     for key in keys:
-        match += f"{query_name} LIKE '%{key}%' and "
+        key = '%%'+key+'%%'
+        match += "{0} LIKE \"{1}\" and ".format(query_name, key)
     
     # remove the last and
     return match[:-5]
@@ -27,5 +28,3 @@ def actor_query_key_word(key_words):
             Where {match}
             Limit 15;
             """
-
-print(actor_query_key_word('scott huang'))

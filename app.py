@@ -108,7 +108,10 @@ def actorpage():
     
     key_word = request.args.get('key_word', default=None, type=str)
     if key_word:
-        return render_template('actors.html', actor_infos=fake_actor+fake_actor+fake_actor)
+        found_actors = database.get_actor_key_word(key_word, db_conn)
+        if len(found_actors) < 1:
+            return render_template('message.html', msg=f'We cannot find any actors with the name {key_word}')
+        return render_template('actors.html', actor_infos=found_actors)
     
     abort(404)
 
@@ -128,6 +131,7 @@ def directorpage():
         if method == DELETE:
             return {'status': 'OK', 'delete': 'works'}
         if method == EDIT:
+
             return render_template('post_director.html', director_info=fake_director[0])
         return render_template('directors.html', director_infos=fake_director)
     
@@ -165,14 +169,10 @@ def reviewpage():
     abort(404)
 
 if __name__ == '__main__':
-    app.run(port=5000, debug=True)
-    '''
     # Example use of model.database
-    import model.database as mydb
-    print('start')
-    db_conn = init_connect_engine().connect()
-    mydb.test(db_conn)
-    db_conn.close()
+    print('start test')
+    database.test(db_conn)
     print('end')
-    '''
+
+    app.run(port=5000, debug=True)
 

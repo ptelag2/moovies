@@ -2,6 +2,10 @@
 
 import model.query as q
 
+def test(db_connection):
+    results = db_connection.execute('Select * From Actors Limit 5')
+    print([x for x in results])
+
 def get_result(query, db_connection):
     '''Make a query and get the response from the sql database.
 
@@ -33,8 +37,19 @@ def get_actor_recommand1(db_connection):
         l.append(d)
     return l
 
-def get_actor_key_word(db_connection):
-    pass
+def get_actor_key_word(key_word, db_connection):
+    query = q.actor_query_key_word(key_word)
+    print(query)
+    results = get_result(query, db_connection)
+    print(results)
+    l = []
+    for result in results:
+        d = {}
+        d['Actor_Name'] = result[0]
+        d['Birth_Year'] = result[1]
+        d['Most_Known_Titles'] = result[2]
+        l.append(d)
+    return l
 
 def get_director_recommand1(db_connection):
     pass
