@@ -65,17 +65,33 @@ def upload_actor(actor_id, db_connection):
     pass
 
 def upload_director(director_id, director_dict, db_connection):
+    print(director_id)
+    director_id = int(director_id)
     if director_id < 0: # insert a new director
         max_id = db_connection.execute(q.get_max_DirectorId())
         new_id = -1
         # print(type(max_id))
         for data in max_id:
             new_id = 1 + data[0]
-        print("before execute")
         result = db_connection.execute(q.insert_DirectorId(new_id, director_dict))
-        print("after execute")
         return director_dict['director_name'] + " has been added to the Directors table with Director ID " + str(new_id)
+    # update director
+    if director_id >= 0:
+        result = db_connection.execute(q.update_DirectorId(director_id, director_dict))
+        return result
     pass
+
+def get_director_info(director_id, db_connection):
+    results = db_connection.execute(q.get_director_info(director_id))
+    d = {}
+    for result in results:
+        d['DirectorId'] = result[0]
+        d['Director_name'] = result[1]
+        d['Birth_Year'] = result[2]
+        d['Death_Year'] = result[3]
+        break
+    return d
+    
 
 def upload_movie(movie_id, db_connection):
     if movie_id < 0: # insert a new movie

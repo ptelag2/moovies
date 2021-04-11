@@ -120,7 +120,8 @@ def directorpage():
         print(request.form['director_name']) # get example data
         d = request.form # assign request_form as dictionary
         print("line 122")
-        mydb.upload_director(-1, d, db_conn)
+        print(request.form['id'])
+        mydb.upload_director(request.form['id'], d, db_conn)
         print("line 124")
         return render_template('message.html', msg='post to directors')
     method = request.args.get('_method', default=None, type=str)
@@ -135,8 +136,8 @@ def directorpage():
             mydb.delete_director(director_id, db_conn)
             return render_template('message.html', msg='deleted from directors')
         if method == EDIT:
-            return render_template('post_director.html', director_info=fake_director[0])
-        return render_template('directors.html', director_infos=fake_director)
+            dict_info = mydb.get_director_info(director_id, db_conn)
+            return render_template('post_director.html', director_info= dict_info)
     
     recommand = request.args.get('recommand', default = False, type = bool)
     if recommand:

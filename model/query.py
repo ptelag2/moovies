@@ -58,13 +58,29 @@ def get_max_DirectorId():
 
 def insert_DirectorId(new_director_id, director_dict):
     name = director_dict['director_name']
-    print(type(name))
-    print(name)
-    print("name")
     birth_year = director_dict['birth_year']
     death_year = director_dict['death_year']
     return f"""
             INSERT INTO Directors(DirectorId, Director_name, Birth_Year, Death_Year)
             Values ({new_director_id}, "{name}", {birth_year}, {death_year});
             """
+
+def update_DirectorId(director_id, director_dict):
+    name = director_dict['director_name']
+    birth_year = director_dict['birth_year']
+    death_year = director_dict['death_year']
+    return f"""
+            UPDATE Directors
+            SET Director_name = "{name}", Birth_Year = {birth_year}, Death_Year = {death_year}
+            Where DirectorId = {director_id};
+            """ 
+
+def get_director_info(director_id):
+    return f"""
+            Select *
+            From Directors
+            Where DirectorId = {director_id};
+            """
+
+
 print(actor_query_key_word('scott huang'))
