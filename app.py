@@ -95,7 +95,10 @@ def moviepage():
 def actorpage():
     if request.method == "POST":
         print(request.form['actor_name']) # get example data
+        d = request.form # assign request_form as dictionary
+        mydb.upload_actor(request.form['id'], d, db_conn)
         return render_template('message.html', msg='post to actors')
+
     method = request.args.get('_method', default=None, type=str)
     if method == UPDATE:
         return render_template('post_actor.html', actor_info={'ActorId': -1})
@@ -105,10 +108,12 @@ def actorpage():
     actor_id = request.args.get('id', default=-1, type=int)
     if actor_id != -1:
         if method == DELETE:
-            return {'status': 'OK', 'delete': 'works'}
+            mydb.delete_actor(actor_id, db_conn)
+            return render_template('message.html', msg='actor deleted :(')
         if method == EDIT:
-            return render_template('post_actor.html', actor_info=fake_actor[0])
-        return render_template('actors.html', actor_infos=fake_actor)
+            actor_info = mydb.get_actor_info(actor_id, db_conn)
+            print(actor_info)
+            return render_template('post_actor.html', actor_info=actor_info)
     
     recommand = request.args.get('recommand', default=False, type=bool)
     if recommand:

@@ -27,8 +27,10 @@ def get_actor_recommand1(db_connection):
     l = []
     for result in results:
         d = {}
-        d['Actor_Name'] = result[0]
-        d['Birth_Year'] = result[1]
+        d['ActorId'] = result[0]
+        d['Actor_Name'] = result[1]
+        d['Birth_Year'] = result[2]
+        d['Death_Year'] = result[3]
         l.append(d)
     return l
 
@@ -40,8 +42,10 @@ def get_actor_key_word(key_word, db_connection):
     l = []
     for result in results:
         d = {}
-        d['Actor_Name'] = result[0]
-        d['Birth_Year'] = result[1]
+        d['ActorId'] = result[0]
+        d['Actor_Name'] = result[1]
+        d['Birth_Year'] = result[2]
+        d['Death_Year'] = result[3]
         l.append(d)
     return l
 
@@ -130,7 +134,7 @@ def get_review_key_word(db_connection):
 
 '''Delete, return a msg whether delete succeeded'''
 def delete_actor(actor_id, db_connection):
-    results = db_connection.execute(q.delete_director_query_recommand1(director_id))
+    results = db_connection.execute(q.delete_actor_query_recommand1(actor_id))
 
 def delete_director(director_id, db_connection):
     results = db_connection.execute(q.delete_director_query_recommand1(director_id))
@@ -142,22 +146,19 @@ def delete_review(review_id, db_connection):
     results = db_connection.execute(q.delete_director_query_recommand1(director_id))
 
 '''Upload (both Put and Post), return a msg whether upload succeeded'''
-def upload_actor(actor_id, db_connection):
-    print(director_id)
-    director_id = int(director_id)
-    if director_id < 0: # insert a new director
-        max_id = db_connection.execute(q.get_max_DirectorId())
+def upload_actor(actor_id, actor_dict, db_connection):
+    actor_id = int(actor_id)
+    if actor_id < 0: # insert a new actor
+        max_id = db_connection.execute(q.get_max_ActorId())
         new_id = -1
         # print(type(max_id))
         for data in max_id:
             new_id = 1 + data[0]
-        result = db_connection.execute(q.insert_DirectorId(new_id, director_dict))
-        return director_dict['director_name'] + " has been added to the Directors table with Director ID " + str(new_id)
-    # update director
-    if director_id >= 0:
-        result = db_connection.execute(q.update_DirectorId(director_id, director_dict))
-        return result
-    pass
+        result = db_connection.execute(q.insert_ActorId(new_id, actor_dict))
+        return actor_dict['actor_name'] + " has been added to the Actors table with Actor ID " + str(new_id)
+    # update actor
+    result = db_connection.execute(q.update_ActorId(actor_id, actor_dict))
+    return result
 
 def upload_director(director_id, director_dict, db_connection):
     director_id = int(director_id)
@@ -187,7 +188,7 @@ def upload_movie(movie_id, movie_dict, db_connection):
     result = db_connection.execute(q.update_MovieId(movie_id, movie_dict))
     return result
 
-def upload_review(review_id, db_connection):
+def upload_review(review_id, review_dict, db_connection):
     print(director_id)
     director_id = int(director_id)
     if director_id < 0: # insert a new director
@@ -205,12 +206,12 @@ def upload_review(review_id, db_connection):
     pass
 
 '''Get Info'''
-def get_actor_info(director_id, db_connection):
-    results = db_connection.execute(q.get_director_info(director_id))
+def get_actor_info(actor_id, db_connection):
+    results = db_connection.execute(q.get_actor_info(actor_id))
     d = {}
     for result in results:
-        d['DirectorId'] = result[0]
-        d['Director_name'] = result[1]
+        d['ActorId'] = result[0]
+        d['Actor_Name'] = result[1]
         d['Birth_Year'] = result[2]
         d['Death_Year'] = result[3]
         break

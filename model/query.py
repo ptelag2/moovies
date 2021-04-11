@@ -14,7 +14,7 @@ def query_key_word(query_name, key_words):
 ''' Actor Functions '''
 def actor_query_recommand1():
     return """
-            Select Actor_Name, Birth_Year, avg(mr.Rating) as AvgRating
+            Select ActorId, Actor_Name, Birth_Year, Death_Year, avg(mr.Rating) as AvgRating
             From Actors as a Natural Join Acted_in Natural Join Movies as m Join MovieRating as mr on m.MovieId = mr.MovieId
             Group BY ActorId
             Having count(m.MovieId) >= 2
@@ -25,12 +25,51 @@ def actor_query_recommand1():
 def actor_query_key_word(key_words):
     match = query_key_word('Actor_Name', key_words)
     return f"""
-            Select Actor_Name, Birth_Year
+            Select ActorId, Actor_Name, Birth_Year, Death_Year
             From Actors
             Where {match}
             Limit 15;
             """
 
+def delete_actor_query_recommand1(actor_id):
+    return f"""
+            DELETE FROM Actors
+            WHERE {actor_id} = ActorId;
+            """
+
+def get_max_ActorId():
+    return f"""
+            SELECT MAX(ActorId)
+            FROM Actors;
+            """
+
+def insert_ActorId(new_actor_id, actor_dict):
+    name = actor_dict['actor_name']
+    birth_year = actor_dict['birth_year']
+    death_year = actor_dict['death_year']
+    most_known_title = ""
+    return f"""
+            INSERT INTO Actors(ActorId, Actor_Name, Birth_Year, Death_Year, Most_Known_Titles)
+            Values ({new_actor_id}, "{name}", {birth_year}, {death_year}, "{most_known_title}");
+            """
+
+def update_ActorId(actor_id, actor_dict):
+    name = actor_dict['actor_name']
+    birth_year = actor_dict['birth_year']
+    death_year = actor_dict['death_year']
+    most_known_title = ""
+    return f"""
+            UPDATE Actors
+            SET Actor_Name = "{name}", Birth_Year = {birth_year}, Death_Year = {death_year}
+            Where ActorId = {actor_id};
+            """ 
+
+def get_actor_info(actor_id):
+    return f"""
+            Select *
+            From Actors
+            Where ActorId = {actor_id};
+            """
 ''' Director Functions'''
 def director_query_recommand1():
     return f"""
