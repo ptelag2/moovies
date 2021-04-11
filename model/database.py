@@ -181,7 +181,7 @@ def upload_movie(movie_id, movie_dict, db_connection):
         # print(type(max_id))
         for data in max_id:
             new_id = 1 + data[0]
-        result = db_connection.execute(q.insert_MovieId(new_id, movie_id))
+        result = db_connection.execute(q.insert_MovieId(new_id, movie_dict))
         return movie_dict['title'] + " has been added to the Movies table with MovieId" + str(new_id)
     # update movie
     result = db_connection.execute(q.update_MovieId(movie_id, movie_dict))
@@ -227,14 +227,16 @@ def get_director_info(director_id, db_connection):
         break
     return d
 
-def get_movie_info(director_id, db_connection):
-    results = db_connection.execute(q.get_director_info(director_id))
+def get_movie_info(movie_id, db_connection):
+    results = db_connection.execute(q.get_movie_info(movie_id))
     d = {}
     for result in results:
-        d['DirectorId'] = result[0]
-        d['Director_name'] = result[1]
-        d['Birth_Year'] = result[2]
-        d['Death_Year'] = result[3]
+        d['MovieId'] = result[0]
+        d['Title'] = result[1]
+        d['Genre'] = result[2]
+        d['Language'] = result[3]
+        d['Publication_Year'] = result[4]
+        d['Runtime'] = result[5]
         break
     return d
 

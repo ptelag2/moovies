@@ -100,7 +100,7 @@ def movie_query_recommand1():
             (Select m.MovieId, m.Title, m.Genre, m.Language, m.Publication_Year, m.Runtime, avg(r.Rating) as rating
             From Movies m Left Join Reviews r ON m.MovieId = r.MovieId
             Where (m.Publication_Year > 2000 and m.Publication_Year < 2010)
-            Group By m.MovieId, m.Title, m.Genre, m.Language m.Publication_Year, m.Runtime
+            Group By m.MovieId, m.Title, m.Genre, m.Language, m.Publication_Year, m.Runtime
             Having rating > 8.0
             Order By rating DESC)
 
@@ -108,8 +108,8 @@ def movie_query_recommand1():
 
             (Select m.MovieId, m.Title, m.Genre, m.Language, m.Publication_Year, m.Runtime, avg(r.Rating) as rating
             From Movies m Left Join Reviews r ON m.MovieId = r.MovieId
-            Where m.Title like "A%"
-            Group By m.MovieId, m.Title, m.Genre, m.Language m.Publication_Year, m.Runtime
+            Where m.Title like "A%%"
+            Group By m.MovieId, m.Title, m.Genre, m.Language, m.Publication_Year, m.Runtime
             Having rating > 8.0
             Order By rating DESC)
             Limit 15;
@@ -170,7 +170,7 @@ def update_MovieId(movie_id, movie_dict):
             Where MovieId = {movie_id};
             """ 
 
-def get_Movie_info(movie_id):
+def get_movie_info(movie_id):
     return f"""
             Select *
             From Movies

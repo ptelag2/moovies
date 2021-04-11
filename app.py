@@ -51,6 +51,8 @@ def moviepage():
     '''
     if request.method == "POST":
         print(request.form['title']) # get example data
+        d = request.form # assign request_form as dictionary
+        mydb.upload_movie(request.form['id'], d, db_conn)
         return render_template('message.html', msg='post to movies')
 
     method = request.args.get('_method', default=None, type=str)
@@ -65,23 +67,27 @@ def moviepage():
     if movie_id != -1:
         if method == DELETE:
             # delete movie with movie_id
+            mydb.delete_movie(movie_id, db_conn)
             return render_template('message.html', msg='movie deleted :(')
         if method == EDIT:
             # no need to do anything
-            return render_template('post_movie.html', movie_info=fake_movie[0])
-        return render_template('movies.html', movie_infos=fake_movie)
+            movie_info = mydb.get_movie_info(movie_id, db_conn)
+            return render_template('post_movie.html', movie_info=movie_info)
     
     recommand = request.args.get('recommand', default = False, type = bool)
     if recommand:
         # place for your advanced query
-        rec_list = fake_movie+fake_movie+fake_movie
-        return render_template('movies.html', movie_infos=rec_list)
+        rec_movies = mydb.get_movie_recommand1(db_conn)
+        rec_movies += mydb.get_movie_recommand2(db_conn)
+        return render_template('movies.html', movie_infos=rec_movies)
     
     key_word = request.args.get('key_word', default=None, type=str)
     if key_word:
+        found_movies = mydb.get_movie_key_word(key_word, db_conn)
         # result for movies containing the key words
-        search_result = fake_movie+fake_movie+fake_movie
-        return render_template('movies.html', movie_infos=search_result)
+        if len(found_movies) < 1:
+            return render_template('message.html', msg=f'We cannot find any movies with the name {key_word}')
+        return render_template('movies.html', movie_infos=found_movies)
     
     abort(404)
 
