@@ -29,7 +29,6 @@ def get_actor_recommand1(db_connection):
         d = {}
         d['Actor_Name'] = result[0]
         d['Birth_Year'] = result[1]
-        d['Most_Known_Titles'] = result[2]
         l.append(d)
     return l
 
@@ -43,13 +42,20 @@ def get_actor_key_word(key_word, db_connection):
         d = {}
         d['Actor_Name'] = result[0]
         d['Birth_Year'] = result[1]
-        d['Most_Known_Titles'] = result[2]
         l.append(d)
     return l
 
 def get_director_recommand1(db_connection):
-    results = db_connection.execute(q.director_query_recommand1())
-    return results
+    results = get_result(q.director_query_recommand1(), db_connection)
+    l = []
+    for result in results:
+        d = {}
+        d['DirectorId'] = result[0]
+        d['Director_name'] = result[1]
+        d['Birth_Year'] = result[2]
+        d['Death_Year'] = result[3]
+        l.append(d)
+    return l
 
 def get_director_key_word(db_connection):
     pass

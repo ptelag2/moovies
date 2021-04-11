@@ -145,7 +145,8 @@ def directorpage():
     
     recommand = request.args.get('recommand', default = False, type = bool)
     if recommand:
-        return render_template('directors.html', director_infos=fake_director+fake_director)
+        rec_directors = mydb.get_director_recommand1(db_conn)
+        return render_template('directors.html', director_infos=rec_directors)
 
     key_word = request.args.get('key_word', default=None, type=str)
     if key_word:

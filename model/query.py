@@ -2,7 +2,7 @@
 
 def actor_query_recommand1():
     return """
-            Select Actor_Name, Birth_Year, Most_Known_Titles, avg(mr.Rating) as AvgRating
+            Select Actor_Name, Birth_Year, avg(mr.Rating) as AvgRating
             From Actors as a Natural Join Acted_in Natural Join Movies as m Join MovieRating as mr on m.MovieId = mr.MovieId
             Group BY ActorId
             Having count(m.MovieId) >= 2
@@ -23,7 +23,7 @@ def query_key_word(query_name, key_words):
 def actor_query_key_word(key_words):
     match = query_key_word('Actor_Name', key_words)
     return f"""
-            Select Actor_Name, Birth_Year, Most_Known_Titles
+            Select Actor_Name, Birth_Year
             From Actors
             Where {match}
             Limit 15;
@@ -31,17 +31,17 @@ def actor_query_key_word(key_words):
 
 def director_query_recommand1():
     return f"""
-            SELECT Director_name as name, Count(Title) as movie_count
+            SELECT d.DirectorId, Director_name as name, Birth_Year, Death_Year, Count(Title) as movie_count
             FROM (Directors d LEFT JOIN Directed_by db ON d.DirectorId = db.DirectorId) LEFT JOIN Movies m ON db.MovieId = m.MovieId
             WHERE d.Birth_Year < 1970 and d.Birth_Year > 1950
-            GROUP BY Director_name
+            GROUP BY d.DirectorId
             
             UNION
             
-            SELECT Director_name as name, Count(Title) as movie_count
+            SELECT d.DirectorId, Director_name as name, Birth_Year, Death_Year, Count(Title) as movie_count
             FROM (Directors d LEFT JOIN Directed_by db ON d.DirectorId = db.DirectorId) LEFT JOIN Movies m ON db.MovieId = m.MovieId
             WHERE m.Publication_Year > 1990 and m.Publication_Year < 2000
-            GROUP BY Director_name
+            GROUP BY d.DirectorId
             
             LIMIT 15;
             """
