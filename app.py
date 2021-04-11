@@ -69,11 +69,12 @@ def moviepage():
             # delete movie with movie_id
             mydb.delete_movie(movie_id, db_conn)
             return render_template('message.html', msg='movie deleted :(')
+        movie_info = mydb.get_movie_info(movie_id, db_conn)
         if method == EDIT:
             # no need to do anything
-            movie_info = mydb.get_movie_info(movie_id, db_conn)
             return render_template('post_movie.html', movie_info=movie_info)
-    
+        print(movie_info)
+        return render_template('movies.html', movie_infos = [movie_info])
     recommand = request.args.get('recommand', default = False, type = bool)
     if recommand:
         # place for your advanced query
@@ -172,22 +173,33 @@ def directorpage():
 def reviewpage():
     if request.method == "POST":
         print(request.form['comment']) # get example data
+        d = request.form
+        print(request.form)
+        mydb.upload_review(request.form['review_id'], d, db_conn)
         return render_template('message.html', msg='post to reviews')
     method = request.args.get('_method', default=None, type=str)
+
     fake_review = [{'ReviewId': 5644564, 'UserId': 654684768, 'MovieId': 659,
                       'Comment': 'I like this movie', 'Rating':5}]
+
     movie_id = request.args.get('movie_id', default = -1, type = int)
     review_id = request.args.get('review_id', default = -1, type = int)
     if movie_id != -1 or review_id != -1:
         if method == DELETE:
-            return {'status': 'OK', 'delete': 'works'}
+            mydb.delete_review(review_id, db_conn)
+            return render_template('message.html', msg='review deleted :(')
+        review_info = mydb.get_review_info(review_id, db_conn)
+        review_info_all = mydb.get_all_reviews(movie_id, db_conn)
         if method == EDIT:
-            return render_template('post_review.html', review_info=fake_review[0])
-        return render_template('reviews.html', review_infos=fake_review+fake_review, allow_comment=True)
+            return render_template('post_review.html', review_info=review_info)
+        return render_template('reviews.html', MovieId = movie_id, review_infos=review_info_all, allow_comment=True)
     
     key_word = request.args.get('key_word', default=None, type=str)
     if key_word:
-        return render_template('reviews.html', review_infos=fake_review+fake_review, allow_comment=False)
+        found_reviews = mydb.get_review_key_word(key_word, db_conn)
+        if len(found_reviews) < 1:
+            return render_template('message.html', msg=f'We cannot find any reviews with the {key_word}')
+        return render_template('reviews.html', review_infos=found_reviews, allow_comment=False)
 
     abort(404)
 

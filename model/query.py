@@ -215,3 +215,59 @@ def get_movie_info(movie_id):
             From Movies
             Where MovieId = {movie_id};
             """
+
+''' Reviews Functions '''
+def get_all_review_info(movie_id):
+    return f"""
+            Select *
+            From Reviews
+            Where MovieId = {movie_id}
+            Limit 15;
+            """
+
+def review_query_key_word(key_words):
+    match = query_key_word('Comment', key_words)
+    return f"""
+            Select *
+            From Reviews
+            Where {match}
+            Limit 15;
+            """
+
+def delete_review_query_recommand1(reviewId):
+    return f"""
+            DELETE FROM Reviews
+            WHERE {reviewId} = ReviewId;
+            """
+
+def get_max_ReviewId():
+    return f"""
+            SELECT MAX(ReviewId)
+            FROM Reviews;
+            """
+
+def insert_ReviewId(new_review_id, review_dict):
+    userId = "2" # User not implemented yet
+    movieId = review_dict['movie_id']
+    comment = review_dict['comment']
+    rating = review_dict['rating']
+    return f"""
+            INSERT INTO Reviews(ReviewId, UserId, MovieId, Comment, Rating)
+            Values ({new_review_id}, {userId}, {movieId}, "{comment}", {rating});
+            """
+
+def update_ReviewId(review_id, review_dict):
+    comment = review_dict['comment']
+    rating = review_dict['rating']
+    return f"""
+            UPDATE Reviews
+            SET Comment = "{comment}", Rating = {rating}
+            Where ReviewId = {review_id};
+            """ 
+
+def get_review_info(review_id):
+    return f"""
+            Select *
+            From Reviews
+            Where ReviewId = {review_id};
+            """

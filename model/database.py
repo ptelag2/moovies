@@ -118,17 +118,18 @@ def get_movie_key_word(key_word, db_connection):
         l.append(d)
     return l
 
-def get_review_key_word(db_connection):
-    query = q.director_query_key_word(key_word)
+def get_review_key_word(key_word, db_connection):
+    query = q.review_query_key_word(key_word)
     results = get_result(query, db_connection)
     print(results)
     l = []
     for result in results:
         d = {}
-        d['DirectorId'] = result[0]
-        d['Director_name'] = result[1]
-        d['Birth_Year'] = result[2]
-        d['Death_Year'] = result[3]
+        d['Comment'] = result[3]
+        d['Rating'] = result[4]
+        d['MovieId'] = result[2]
+        d['ReviewId'] = result[0]
+        d['UserId'] = result[1]
         l.append(d)
     return l
 
@@ -143,7 +144,7 @@ def delete_movie(movie_id, db_connection):
     results = db_connection.execute(q.delete_movie_query_recommand1(movie_id))
 
 def delete_review(review_id, db_connection):
-    results = db_connection.execute(q.delete_director_query_recommand1(director_id))
+    results = db_connection.execute(q.delete_review_query_recommand1(review_id))
 
 '''Upload (both Put and Post), return a msg whether upload succeeded'''
 def upload_actor(actor_id, actor_dict, db_connection):
@@ -189,21 +190,18 @@ def upload_movie(movie_id, movie_dict, db_connection):
     return result
 
 def upload_review(review_id, review_dict, db_connection):
-    print(director_id)
-    director_id = int(director_id)
-    if director_id < 0: # insert a new director
-        max_id = db_connection.execute(q.get_max_DirectorId())
+    review_id = int(review_id)
+    if review_id < 0: # insert a new review
+        max_id = db_connection.execute(q.get_max_ReviewId())
         new_id = -1
         # print(type(max_id))
         for data in max_id:
             new_id = 1 + data[0]
-        result = db_connection.execute(q.insert_DirectorId(new_id, director_dict))
-        return director_dict['director_name'] + " has been added to the Directors table with Director ID " + str(new_id)
-    # update director
-    if director_id >= 0:
-        result = db_connection.execute(q.update_DirectorId(director_id, director_dict))
-        return result
-    pass
+        result = db_connection.execute(q.insert_ReviewId(new_id, review_dict))
+        return "Your review has been posted."
+    # update review
+    result = db_connection.execute(q.update_ReviewId(review_id, review_dict))
+    return result
 
 '''Get Info'''
 def get_actor_info(actor_id, db_connection):
@@ -241,13 +239,27 @@ def get_movie_info(movie_id, db_connection):
         break
     return d
 
-def get_review_info(director_id, db_connection):
-    results = db_connection.execute(q.get_director_info(director_id))
+def get_review_info(review_id, db_connection):
+    results = db_connection.execute(q.get_review_info(review_id))
     d = {}
     for result in results:
-        d['DirectorId'] = result[0]
-        d['Director_name'] = result[1]
-        d['Birth_Year'] = result[2]
-        d['Death_Year'] = result[3]
+        d['Comment'] = result[3]
+        d['Rating'] = result[4]
+        d['MovieId'] = result[2]
+        d['ReviewId'] = result[0]
+        d['UserId'] = result[1]
         break
     return d
+
+def get_all_reviews(movie_id, db_connection):
+    all_results = db_connection.execute(q.get_all_review_info(movie_id))
+    l = []
+    for result in all_results:
+        d = {}
+        d['Comment'] = result[3]
+        d['Rating'] = result[4]
+        d['MovieId'] = result[2]
+        d['ReviewId'] = result[0]
+        d['UserId'] = result[1]
+        l.append(d)
+    return l
