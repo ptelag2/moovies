@@ -73,7 +73,6 @@ def moviepage():
         if method == EDIT:
             # no need to do anything
             return render_template('post_movie.html', movie_info=movie_info)
-        print(movie_info)
         return render_template('movies.html', movie_infos = [movie_info])
     recommand = request.args.get('recommand', default = False, type = bool)
     if recommand:
@@ -111,10 +110,11 @@ def actorpage():
         if method == DELETE:
             mydb.delete_actor(actor_id, db_conn)
             return render_template('message.html', msg='actor deleted :(')
+        actor_info = mydb.get_actor_info(actor_id, db_conn)
         if method == EDIT:
-            actor_info = mydb.get_actor_info(actor_id, db_conn)
             print(actor_info)
             return render_template('post_actor.html', actor_info=actor_info)
+        return render_template('actors.html', actor_infos = [actor_info])
     
     recommand = request.args.get('recommand', default=False, type=bool)
     if recommand:
@@ -151,10 +151,11 @@ def directorpage():
         if method == DELETE:
             mydb.delete_director(director_id, db_conn)
             return render_template('message.html', msg='deleted from directors')
+        dict_info = mydb.get_director_info(director_id, db_conn)
         if method == EDIT:
-            dict_info = mydb.get_director_info(director_id, db_conn)
             return render_template('post_director.html', director_info= dict_info)
-    
+        return render_template('directors.html', director_infos=[dict_info])
+
     recommand = request.args.get('recommand', default = False, type = bool)
     if recommand:
         rec_directors = mydb.get_director_recommand1(db_conn)
