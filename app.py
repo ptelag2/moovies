@@ -150,7 +150,10 @@ def directorpage():
 
     key_word = request.args.get('key_word', default=None, type=str)
     if key_word:
-        return render_template('directors.html', director_infos=fake_director+fake_director)
+        found_directors = mydb.get_director_key_word(key_word, db_conn)
+        if len(found_directors) < 1:
+            return render_template('message.html', msg=f'We cannot find any directors with the name {key_word}')
+        return render_template('directors.html', director_infos=found_directors)
     
     abort(404)
 

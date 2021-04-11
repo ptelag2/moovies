@@ -45,6 +45,14 @@ def director_query_recommand1():
             
             LIMIT 15;
             """
+def director_query_key_word(key_words):
+    match = query_key_word('Director_name', key_words)
+    return f"""
+            Select *
+            From Directors
+            Where {match}
+            Limit 15;
+            """
 def delete_director_query_recommand1(director_id):
     return f"""
             DELETE FROM Directors

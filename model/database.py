@@ -57,8 +57,19 @@ def get_director_recommand1(db_connection):
         l.append(d)
     return l
 
-def get_director_key_word(db_connection):
-    pass
+def get_director_key_word(key_word, db_connection):
+    query = q.director_query_key_word(key_word)
+    results = get_result(query, db_connection)
+    print(results)
+    l = []
+    for result in results:
+        d = {}
+        d['DirectorId'] = result[0]
+        d['Director_name'] = result[1]
+        d['Birth_Year'] = result[2]
+        d['Death_Year'] = result[3]
+        l.append(d)
+    return l
 
 def get_movie_recommand1(db_connection):
     pass
