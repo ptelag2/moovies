@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+th, td {
+  padding: 5px;
+  text-align: left;
+}
+</style>
+</head>
+<body>
+
+{% for director_info in director_infos %}
+<a href="/directors?id={{ director_info['DirectorId'] }}">
+    <h2>Director: {{ director_info['Director_name'] }}</h2>
+</a>
+
+<table style="width:80%">
+  <tr>
+      <th>Name:</th>
+      <td><p>{{ director_info['Director_name'] }}</p></td>
+  </tr>
+  <tr>
+      <th>Birth Year:</th>
+      <td><p>{{ director_info['Birth_Year'] }}</p></td>
+  </tr>
+  <tr>
+      <th>Death_Year:</th>
+      <td><p>{{ director_info['Death_Year'] }}</p></td>
+  </tr>
+</table>
+
+<div style="display:inline-block;">
+<form action="/directors" method="GET">
+  <button>Edit</button>
+  <input type="hidden" name="id" value="{{ director_info['DirectorId'] }}">
+  <input type="hidden" name="_method" value="EDIT">
+</form>
+</div>
+<div style="display:inline-block;">
+  <form action="/directors" method="GET">
+  <button>Delete</button>
+  <input type="hidden" name="id" value="{{ director_info['DirectorId'] }}">
+  <input type="hidden" name="_method" value="DELETE">
+</form>
+</div>
+
+{% endfor %}

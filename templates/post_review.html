@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>Edit Comment</h2>
+<p>Your Comment:</p>
+<form action="/reviews/" method="POST">
+<textarea rows = "6" cols = "80" name = "comment">
+{{ review_info['Comment'] }}
+</textarea>
+<br/>
+<div style="display:inline-block;">
+    Rating:
+    <select type="hidden" name="rating" style="display:inline-block;">
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+      <option value="7">7</option>
+      <option value="8">8</option>
+      <option value="9">9</option>
+      <option value="10">10</option>
+    </select>
+    <input type="hidden" name="movie_id" value="{{ MovieId }}">
+</div>
+<div style="display:inline-block;">
+    <button>Upload</button>
+    <input type="hidden" name="review_id" value="{{ review_info['ReviewId'] }}">
+</div>
+</form>

@@ -8,7 +8,7 @@
   }
 </script>
 
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
 
 <div class="top">
   <img src="{{url_for('static', filename='images/moovie.png')}}" />
@@ -20,6 +20,7 @@
     <option value="movies">Moovies</option>
     <option value="directors">Directors</option>
     <option value="actors">Actors</option>
+    <option value="reviews">Reviews</option>
   </select>
     : <input type="text" name="key_word" style="font-size:24pt;height:60px;width:600px;" maxlength="40" />
     <input type="submit" value="Find"  style="font-size:24pt;" />
@@ -39,6 +40,22 @@
   <form action="/directors" style="width: 120px; display:inline-block;">
     <input type="hidden" name="recommand" value=True />
     <button class="button button1" type="submit">Directors</button> 
+  </form>
+</p>
+
+<p>
+  Upload:
+  <form action="/movies" style="width: 120px; display:inline-block;">
+    <input type="hidden" name="_method" value=UPDATE />
+    <button class="button button2" type="submit">Movies</button>
+  </form>
+  <form action="/actors" style="width: 120px; display:inline-block;">
+    <input type="hidden" name="_method" value=UPDATE />
+    <button class="button button2" type="submit">Actors</button>
+  </form>
+  <form action="/directors" style="width: 120px; display:inline-block;">
+    <input type="hidden" name="_method" value=UPDATE />
+    <button class="button button2" type="submit">Directors</button> 
   </form>
 </p>
 </div>

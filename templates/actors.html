@@ -15,11 +15,15 @@ th, td {
 <body>
 
 {% for actor_info in actor_infos %}
-<h2>Actor: {{ actor_info['Actor_Name'] }}</h2>
+<a href="/actors?id={{ actor_info['ActorId'] }}">
+    <h2>Actor: {{ actor_info['Actor_Name'] }}</h2>
+</a>
+
 
 <table style="width:80%">
     <tr>
-        <th>Actor Name:</th>
+        <th>Name:</th>
+
         <td><p>{{ actor_info['Actor_Name'] }}</p></td>
     </tr>
     <tr>
@@ -31,7 +35,22 @@ th, td {
         <td><p>{{ actor_info['Death_Year'] }}</p></td>
     </tr>
   </table>
-{% endfor %}
 
-</body>
-</html>
+
+<div style="display:inline-block;">
+  <form action="/actors/" method="GET">
+  <button>Edit</button>
+  <input type="hidden" name="id" value="{{ actor_info['ActorId'] }}">
+  <input type="hidden" name="_method" value="EDIT">
+</form>
+</div>
+<div style="display:inline-block;">
+  <form action="/actors/" method="GET">
+  <button>Delete</button>
+  <input type="hidden" name="id" value="{{ actor_info['ActorId'] }}">
+  <input type="hidden" name="_method" value="DELETE">
+</form>
+</div>
+
+
+{% endfor %}

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+th, td {
+  padding: 5px;
+  text-align: left;
+}
+</style>
+</head>
+<body>
+
+<h2>Upload Movie</h2>
+
+<form action="/movies/" method="POST">
+<table style="width:80%">
+    <tr>
+        <th>Title:</th>
+        <td><input name="title" value="{{ movie_info['Title'] }}" /></td>
+    </tr>
+    <tr>
+        <th>Genre:</th>
+        <td><input name="genre" value="{{ movie_info['Genre'] }}" /></td>
+    </tr>
+    <tr>
+        <th>Language:</th>
+        <td><input name="language" value="{{ movie_info['Language'] }}" /></td>
+    </tr>
+    <tr>
+        <th>Publication Year:</th>
+        <td><input name="pub_year" value="{{ movie_info['Publication_Year'] }}" /></td>
+    </tr>
+    <tr>
+        <th>Run Time:</th>
+        <td><input name="runtime" value="{{ movie_info['Runtime'] }}" /></td>
+    </tr>
+</table>
+
+<div style="display:inline-block;">
+    <button>Upload</button>
+    <input type="hidden" name="id" value="{{ movie_info['MovieId'] }}">
+</div>
+</form>
