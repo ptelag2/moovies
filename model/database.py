@@ -135,16 +135,33 @@ def get_review_key_word(key_word, db_connection):
 
 '''Delete, return a msg whether delete succeeded'''
 def delete_actor(actor_id, db_connection):
-    results = db_connection.execute(q.delete_actor_query_recommand1(actor_id))
+    try:
+        db_connection.execute(q.delete_actor_query_recommand1(actor_id))
+        return 'Actor deleted :('
+    except Exception: 
+        return 'Unable to delete the actor'
 
 def delete_director(director_id, db_connection):
-    results = db_connection.execute(q.delete_director_query_recommand1(director_id))
+    try:
+        db_connection.execute(q.delete_director_query_recommand1(director_id))
+        return 'Director deleted :('
+    except Exception: 
+        return 'Unable to delete the director'
 
 def delete_movie(movie_id, db_connection):
-    results = db_connection.execute(q.delete_movie_query_recommand1(movie_id))
+    try:
+        db_connection.execute(q.delete_movie_query_recommand1(movie_id))
+        return 'Movie deleted :('
+    except Exception: 
+        return 'Unable to delete the movie'
 
 def delete_review(review_id, db_connection):
-    results = db_connection.execute(q.delete_review_query_recommand1(review_id))
+    try:
+        db_connection.execute(q.delete_review_query_recommand1(review_id))
+        return 'Review deleted :('
+    except Exception: 
+        return 'Unable to delete the review'
+    
 
 '''Upload (both Put and Post), return a msg whether upload succeeded'''
 def upload_actor(actor_id, actor_dict, db_connection):
@@ -152,56 +169,52 @@ def upload_actor(actor_id, actor_dict, db_connection):
     if actor_id < 0: # insert a new actor
         max_id = db_connection.execute(q.get_max_ActorId())
         new_id = -1
-        # print(type(max_id))
         for data in max_id:
             new_id = 1 + data[0]
-        result = db_connection.execute(q.insert_ActorId(new_id, actor_dict))
-        return actor_dict['actor_name'] + " has been added to the Actors table with Actor ID " + str(new_id)
+        db_connection.execute(q.insert_ActorId(new_id, actor_dict))
+        return actor_dict['actor_name'] + ' has been added to the database.'
     # update actor
-    result = db_connection.execute(q.update_ActorId(actor_id, actor_dict))
-    return result
+    db_connection.execute(q.update_ActorId(actor_id, actor_dict))
+    return 'Information updated'
 
 def upload_director(director_id, director_dict, db_connection):
     director_id = int(director_id)
     if director_id < 0: # insert a new director
         max_id = db_connection.execute(q.get_max_DirectorId())
         new_id = -1
-        # print(type(max_id))
         for data in max_id:
             new_id = 1 + data[0]
-        result = db_connection.execute(q.insert_DirectorId(new_id, director_dict))
-        return director_dict['director_name'] + " has been added to the Directors table with Director ID " + str(new_id)
+        db_connection.execute(q.insert_DirectorId(new_id, director_dict))
+        return director_dict['director_name'] + ' has been added to the database.'
     # update director
-    result = db_connection.execute(q.update_DirectorId(director_id, director_dict))
-    return result
+    db_connection.execute(q.update_DirectorId(director_id, director_dict))
+    return 'Information updated'
 
 def upload_movie(movie_id, movie_dict, db_connection):
     movie_id = int(movie_id)
     if movie_id < 0: # insert a new movie
         max_id = db_connection.execute(q.get_max_MovieId())
         new_id = -1
-        # print(type(max_id))
         for data in max_id:
             new_id = 1 + data[0]
-        result = db_connection.execute(q.insert_MovieId(new_id, movie_dict))
-        return movie_dict['title'] + " has been added to the Movies table with MovieId" + str(new_id)
+        db_connection.execute(q.insert_MovieId(new_id, movie_dict))
+        return movie_dict['title'] + ' has been added to the database'
     # update movie
-    result = db_connection.execute(q.update_MovieId(movie_id, movie_dict))
-    return result
+    db_connection.execute(q.update_MovieId(movie_id, movie_dict))
+    return 'Information updated'
 
 def upload_review(review_id, review_dict, db_connection):
     review_id = int(review_id)
     if review_id < 0: # insert a new review
         max_id = db_connection.execute(q.get_max_ReviewId())
         new_id = -1
-        # print(type(max_id))
         for data in max_id:
             new_id = 1 + data[0]
-        result = db_connection.execute(q.insert_ReviewId(new_id, review_dict))
+        db_connection.execute(q.insert_ReviewId(new_id, review_dict))
         return "Your review has been posted."
     # update review
-    result = db_connection.execute(q.update_ReviewId(review_id, review_dict))
-    return result
+    db_connection.execute(q.update_ReviewId(review_id, review_dict))
+    return 'Information updated'
 
 '''Get Info'''
 def get_actor_info(actor_id, db_connection):
