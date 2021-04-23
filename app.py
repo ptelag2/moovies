@@ -1,4 +1,4 @@
-from flask import Flask, request, abort, render_template
+from flask import Flask, request, abort, render_template, make_response
 import os
 import sqlalchemy
 from yaml import load, Loader
@@ -154,8 +154,11 @@ def directorpage():
 @app.route('/reviews/', methods=[GET, POST])
 def reviewpage():
     if request.method == "POST":
-        msg = mydb.upload_review(request.form['review_id'], request.form, db_conn)
-        return render_template('message.html', msg=msg)
+        if request.authorization and mydb.authenticate(request.authorization.username, request.authorization.password):
+            user_id = mydb.get_user_id(request.authorization.username)
+            msg = mydb.upload_review(request.form['review_id'], user_id, request.form, db_conn)
+            return render_template('message.html', msg=msg)
+        return make_response('Could not verify!', 401, {'WWW-Authenticate':'Basic realm="Login Required"'})
     method = request.args.get('_method', default=None, type=str)
 
     movie_id = request.args.get('movie_id', default=-1, type = int)
@@ -181,10 +184,13 @@ def reviewpage():
 
 @app.route('/votes/')
 def votepage():
-    review_id = request.args.get('review_id', default=-1, type = int)
-    if review_id == -1:
-        abort(404)
-    return render_template('message.html', msg=f'Get vote on review {review_id}')
+    if request.authorization and mydb.authenticate(request.authorization.username, request.authorization.password):
+        user_id = mydb.get_user_id(request.authorization.username)
+        review_id = request.args.get('review_id', default=-1, type = int)
+        if review_id == -1:
+            abort(404)
+        return render_template('message.html', msg=f'Get vote on review {review_id} made by {user_id}')
+    return make_response('Could not verify!', 401, {'WWW-Authenticate':'Basic realm="Login Required"'})
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)

@@ -37,13 +37,13 @@ def delete_actor_query_recommand1(actor_id):
             WHERE {actor_id} = ActorId;
             """
 
-def get_max_ActorId():
+def get_max_actor_id():
     return f"""
             SELECT MAX(ActorId)
             FROM Actors;
             """
 
-def insert_ActorId(new_actor_id, actor_dict):
+def insert_actor(new_actor_id, actor_dict):
     name = actor_dict['actor_name']
     birth_year = actor_dict['birth_year']
     death_year = actor_dict['death_year']
@@ -53,11 +53,10 @@ def insert_ActorId(new_actor_id, actor_dict):
             Values ({new_actor_id}, "{name}", {birth_year}, {death_year}, "{most_known_title}");
             """
 
-def update_ActorId(actor_id, actor_dict):
+def update_actor(actor_id, actor_dict):
     name = actor_dict['actor_name']
     birth_year = actor_dict['birth_year']
     death_year = actor_dict['death_year']
-    most_known_title = ""
     return f"""
             UPDATE Actors
             SET Actor_Name = "{name}", Birth_Year = {birth_year}, Death_Year = {death_year}
@@ -101,13 +100,13 @@ def delete_director_query_recommand1(director_id):
             WHERE {director_id} = DirectorId;
             """
 
-def get_max_DirectorId():
+def get_max_director_id():
     return f"""
             SELECT MAX(DirectorId)
             FROM Directors;
             """
 
-def insert_DirectorId(new_director_id, director_dict):
+def insert_director(new_director_id, director_dict):
     name = director_dict['director_name']
     birth_year = director_dict['birth_year']
     death_year = director_dict['death_year']
@@ -116,7 +115,7 @@ def insert_DirectorId(new_director_id, director_dict):
             Values ({new_director_id}, "{name}", {birth_year}, {death_year});
             """
 
-def update_DirectorId(director_id, director_dict):
+def update_director(director_id, director_dict):
     name = director_dict['director_name']
     birth_year = director_dict['birth_year']
     death_year = director_dict['death_year']
@@ -180,13 +179,13 @@ def delete_movie_query_recommand1(MovieId):
             WHERE {MovieId} = MovieId;
             """
 
-def get_max_MovieId():
+def get_max_movie_id():
     return f"""
             SELECT MAX(MovieId)
             FROM Movies;
             """
 
-def insert_MovieId(new_movie_id, movie_dict):
+def insert_movie(new_movie_id, movie_dict):
     title = movie_dict['title']
     genre = movie_dict['genre']
     language = movie_dict['language']
@@ -197,7 +196,7 @@ def insert_MovieId(new_movie_id, movie_dict):
             Values ({new_movie_id}, "{title}", "{genre}", "{language}", {pub_year}, {run_time});
             """
 
-def update_MovieId(movie_id, movie_dict):
+def update_movie(movie_id, movie_dict):
     title = movie_dict['title']
     genre = movie_dict['genre']
     language = movie_dict['language']
@@ -240,14 +239,14 @@ def delete_review_query_recommand1(reviewId):
             WHERE {reviewId} = ReviewId;
             """
 
-def get_max_ReviewId():
+def get_max_review_id():
     return f"""
             SELECT MAX(ReviewId)
             FROM Reviews;
             """
 
-def insert_ReviewId(new_review_id, review_dict):
-    userId = "2" # User not implemented yet
+def insert_review(new_review_id, user_id, review_dict):
+    userId = str(user_id)
     movieId = review_dict['movie_id']
     comment = review_dict['comment']
     rating = review_dict['rating']
@@ -256,7 +255,7 @@ def insert_ReviewId(new_review_id, review_dict):
             Values ({new_review_id}, {userId}, {movieId}, "{comment}", {rating});
             """
 
-def update_ReviewId(review_id, review_dict):
+def update_review(review_id, review_dict):
     comment = review_dict['comment']
     rating = review_dict['rating']
     return f"""
