@@ -270,3 +270,25 @@ def get_review_info(review_id):
             From Reviews
             Where ReviewId = {review_id};
             """
+
+def get_user(username):
+    return f"""
+            Select UserId
+            From Users
+            Where Username = "{username}"
+            """
+
+def create_user(username, password, user_id):
+    return f"""
+            Insert Into Users
+            Values ({user_id}, "We don't want you to have a name", "{username}", "{password}", 10)
+            """
+
+def vote(user_id, review_id):
+    return f"""
+            Insert Into Voted_on
+            Values ({review_id}, {user_id})
+            """
+
+def check_vote(user_id, review_id):
+    pass

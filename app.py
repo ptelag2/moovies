@@ -154,8 +154,8 @@ def directorpage():
 @app.route('/reviews/', methods=[GET, POST])
 def reviewpage():
     if request.method == "POST":
-        if request.authorization and mydb.authenticate(request.authorization.username, request.authorization.password):
-            user_id = mydb.get_user_id(request.authorization.username)
+        if request.authorization and mydb.authenticate(request.authorization.username, request.authorization.password, db_conn):
+            user_id = mydb.get_user_id(request.authorization.username, db_conn)
             msg = mydb.upload_review(request.form['review_id'], user_id, request.form, db_conn)
             return render_template('message.html', msg=msg)
         return make_response('Could not verify!', 401, {'WWW-Authenticate':'Basic realm="Login Required"'})
@@ -184,12 +184,13 @@ def reviewpage():
 
 @app.route('/votes/')
 def votepage():
-    if request.authorization and mydb.authenticate(request.authorization.username, request.authorization.password):
-        user_id = mydb.get_user_id(request.authorization.username)
+    if request.authorization and mydb.authenticate(request.authorization.username, request.authorization.password, db_conn):
+        user_id = mydb.get_user_id(request.authorization.username, db_conn)
         review_id = request.args.get('review_id', default=-1, type = int)
         if review_id == -1:
             abort(404)
-        return render_template('message.html', msg=f'Get vote on review {review_id} made by {user_id}')
+        msg = mydb.vote(user_id, review_id, db_conn)
+        return render_template('message.html', msg=msg)
     return make_response('Could not verify!', 401, {'WWW-Authenticate':'Basic realm="Login Required"'})
 
 if __name__ == '__main__':

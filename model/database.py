@@ -277,9 +277,25 @@ def get_all_reviews(movie_id, db_connection):
         l.append(d)
     return l
 
+import random
 '''Authentification.'''
-def authenticate(username, password):
+def authenticate(username, password, db_connection):
+    if not username:
+        return False
+    user_exist = len(list(db_connection.execute(q.get_user(username)))) == 1
+    if user_exist:
+        return True
+    
+    db_connection.execute(q.create_user(username, password, random.randint(5, 1000000)))
     return True
 
-def get_user_id(username):
-    return 2
+def get_user_id(username, db_connection):
+    results = db_connection.execute(q.get_user(username))
+    for result in results:
+        print(result)
+        return result[0]
+
+def vote(user_id, review_id, db_connection):
+    # TODO check whether vote has already existed
+    db_connection.execute(q.vote(user_id, review_id))
+    return 'You have successfully liked the comment :)'
