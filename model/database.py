@@ -284,6 +284,7 @@ def authenticate(username, password, db_connection):
         return False
     user_exist = len(list(db_connection.execute(q.get_user(username)))) == 1
     if user_exist:
+        # TODO check password
         return True
     
     db_connection.execute(q.create_user(username, password, random.randint(5, 1000000)))

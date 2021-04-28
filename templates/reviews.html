@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
 <head>
 <style>
 table, th, td {
@@ -35,7 +36,7 @@ th, td {
       <option value="9">9</option>
       <option value="10">10</option>
     </select>
-    <button style="display:inline-block ">Comment:</button>
+    <button class="button button5" style="display:inline-block ">Comment:</button>
     <input type="hidden" name="movie_id" value="{{ MovieId }}">
     <input type="hidden" name="review_id" value="-1">
 </div>
@@ -66,21 +67,21 @@ th, td {
   
 <div style="display:inline-block;">
 <form action="/reviews" method="GET">
-  <button>Edit</button>
+  <button class="button button5">Edit</button>
   <input type="hidden" name="review_id" value="{{ review_info['ReviewId'] }}">
   <input type="hidden" name="_method" value="EDIT">
 </form>
 </div>
 <div style="display:inline-block;">
 <form action="/reviews" method="GET">
-  <button>Delete</button>
+  <button class="button button5">Delete</button>
   <input type="hidden" name="review_id" value="{{ review_info['ReviewId'] }}">
   <input type="hidden" name="_method" value="DELETE">
 </form>
 </div>
 <div style="display:inline-block;">
   <form action="/votes" method="GET">
-    <button>Like</button>
+    <button class="button button5">Like</button>
     <input type="hidden" name="review_id" value="{{ review_info['ReviewId'] }}">
   </form>
   </div>

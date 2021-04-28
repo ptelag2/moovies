@@ -10,15 +10,16 @@ def init_connect_engine():
         env_variables = variables['env_variables']
         for var in env_variables:
             os.environ[var] = env_variables[var]
-            pool = sqlalchemy.create_engine(
-            sqlalchemy.engine.url.URL(
-            drivername="mysql+pymysql",
-            username=os.environ.get('MYSQL_USER'), #username
-            password=os.environ.get('MYSQL_PASSWORD'), #user password
-            database=os.environ.get('MYSQL_DB'), #database name
-            host=os.environ.get('MYSQL_HOST') #ip
-            )
+
+    pool = sqlalchemy.create_engine(
+        sqlalchemy.engine.url.URL(
+        drivername="mysql+pymysql",
+        username=os.environ.get('MYSQL_USER'), #username
+        password=os.environ.get('MYSQL_PASSWORD'), #user password
+        database=os.environ.get('MYSQL_DB'), #database name
+        host=os.environ.get('MYSQL_HOST') #ip
         )
+    )
     return pool
 
 # Initialize Google GCP databyse connection    

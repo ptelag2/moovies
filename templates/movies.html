@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 <html>
+
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+
 <head>
 <style>
 table, th, td {
@@ -42,20 +45,20 @@ th, td {
   </tr>
 </table>
 
-<a href="/reviews?movie_id={{ movie_info['MovieId'] }}" style="width: 70%; display:inline-block;">
+<a href="/reviews?movie_id={{ movie_info['MovieId'] }}" style="width: 60%; display:inline-block; font-size:160%;">
   Comments
 </a>
 
 <div style="display:inline-block;">
   <form action="/movies" method="GET" style="display:inline-block;">
-  <button>Edit</button>
+  <button class="button button5">Edit</button>
   <input type="hidden" name="id" value="{{ movie_info['MovieId'] }}">
   <input type="hidden" name="_method" value="EDIT">
 </form>
 </div>
 <div style="display:inline-block;">
   <form action="/movies" method="GET" style="display:inline-block;">
-  <button>Delete</button>
+  <button class="button button5">Delete</button>
   <input type="hidden" name="id" value="{{ movie_info['MovieId'] }}">
   <input type="hidden" name="_method" value="DELETE">
 </form>
